@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: coffeebean-back
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://database/coffeebean?useUnicode=true&characterEncoding=utf8
+    username: coffeebean
+    password: 6l/*LOLuErckyTz8!#(X@LFQF"!*n<wR
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    database-platform: org.hibernate.dialect.MariaDBDialect

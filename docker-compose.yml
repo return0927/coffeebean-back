@@ -1,0 +1,13 @@
+services:
+  database:
+    image: mariadb:11
+    volumes:
+      - ./run/data:/var/lib/mysql:Z
+    environment:
+      TZ: Asia/Seoul
+      MARIADB_RANDOM_ROOT_PASSWORD: 1
+      MARIADB_DATABASE: coffeebean
+      MARIADB_USER: coffeebean
+      MARIADB_PASSWORD: 6l/*LOLuErckyTz8!#(X@LFQF"!*n<wR
+    ports:
+      - 3306:3306
