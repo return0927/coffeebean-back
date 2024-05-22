@@ -28,16 +28,24 @@ repositories {
 fun boot(packageName: String) = "org.springframework.boot:spring-boot-$packageName"
 
 dependencies {
+    /* SPRING */
     implementation(boot("starter-data-jpa"))
     implementation(boot("starter-data-rest"))
     implementation(boot("starter-web"))
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    /* DOCUMENTATION */
+    implementation("io.springfox:springfox-boot-starter:3.0.0")
+    implementation("io.springfox:springfox-swagger2:3.0.0")
+    implementation("io.springfox:springfox-swagger-ui:3.0.0")
 
+    /* DATABASE & SERIALIZATION */
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+
+    /* MISC */
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
-    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
     testImplementation(boot("starter-test"))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
