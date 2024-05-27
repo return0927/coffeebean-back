@@ -2,9 +2,14 @@ FROM amazoncorretto:17 as builder
 
 WORKDIR /build
 
-ADD ./*.kts ./
-ADD gradle ./gradle
+COPY ./*.kts ./
+COPY gradle/ ./gradle/
+COPY gradlew .
 
+RUN chmod +x ./gradlew \
+    && ./gradlew build --parallel --continue 2>/dev/null || true
+
+COPY . /build/
 RUN chmod +x ./gradlew \
     && ./gradlew build jar \
     && cp ./build/libs/*.jar boot.jar
