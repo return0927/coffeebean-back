@@ -1,4 +1,12 @@
 services:
+  app:
+    build:
+      context: .
+    ports:
+      - "127.0.0.25:8080:8080"
+    environment:
+      JAVA_OPTS:
+      PROC_OPTS:
   database:
     image: mariadb:11
     volumes:
