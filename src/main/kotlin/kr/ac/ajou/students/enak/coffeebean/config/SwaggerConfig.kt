@@ -3,7 +3,6 @@ package kr.ac.ajou.students.enak.coffeebean.config
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import springfox.documentation.builders.ApiInfoBuilder
-import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.service.Contact
 import springfox.documentation.spi.DocumentationType
@@ -20,10 +19,10 @@ class SwaggerConfig {
         .build()
 
     @Bean
-    fun api() = Docket(DocumentationType.SWAGGER_2)
+    fun api(): Docket = Docket(DocumentationType.SWAGGER_2)
         .apiInfo(apiInfo())
         .select()
         .apis(RequestHandlerSelectors.any())
-        .paths(PathSelectors.any())
+        .paths { each -> each.startsWith("/api/") }
         .build()
 }
