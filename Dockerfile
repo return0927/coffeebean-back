@@ -7,12 +7,14 @@ COPY gradle/ ./gradle/
 COPY gradlew .
 
 RUN chmod +x ./gradlew \
-    && ./gradlew build --parallel --continue 2>/dev/null || true
+    && ./gradlew build --no-daemon 2>/dev/null || true
 
 COPY . /build/
 RUN chmod +x ./gradlew \
-    && ./gradlew build jar \
-    && cp ./build/libs/*.jar boot.jar
+    && ./gradlew build jar --no-daemon \
+    && rm -rf build/libs/*-plain.jar \
+    && export JAR=build/libs/*.jar \
+    && cp $JAR boot.jar
 
 
 FROM amazoncorretto:17-alpine
@@ -23,4 +25,5 @@ ENV PROC_ARGS=""
 COPY --from=builder /build/boot.jar ./
 COPY --from=builder /build/src/ ./src/
 
-CMD ["java", "$JAVA_ARGS", "-jar", "./boot.jar", "$PROC_ARGS"]
+CMD ["sh", "-c", "java $JAVA_ARGS -jar boot.jar $PROC_ARGS"]
+
