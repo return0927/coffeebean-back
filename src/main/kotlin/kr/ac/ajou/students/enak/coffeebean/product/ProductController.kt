@@ -9,7 +9,16 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/products/")
 class ProductController {
     @GetMapping("/{id}")
-    fun getProductInfo(@PathVariable("id") id: Int): String {
-        return "Your id is $id"
+    fun getProductInfo(@PathVariable("id") id: Int): ProductDto {
+        return ProductDto(
+            productId = id,
+            brandName = "A Company Name",
+            origins = "Africa",
+            quantity = 999,
+            processing = "",
+            grinding = "",
+            price = 100000,
+            discounts = 0,
+        )
     }
 }
