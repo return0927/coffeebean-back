@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/return0927/coffeebean-back:latest
+    image: ghcr.io/return0927/coffeebean-back:master
     #    build:
     #      context: .
     ports:
