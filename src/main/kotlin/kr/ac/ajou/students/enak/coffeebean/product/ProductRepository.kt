@@ -7,16 +7,7 @@ import org.springframework.stereotype.Component
 class ProductRepository : Repository<ProductEntity>() {
     fun getProductById(id: Long): ProductEntity? {
         val result = query("SELECT * FROM products WHERE id = ?", id) { rs ->
-            return@query ProductEntity(
-                id = rs.getLong("id"),
-                brandName = rs.getString("brand_name"),
-                origins = rs.getString("origins"),
-                quantity = rs.getLong("quantity"),
-                processing = rs.getString("processing"),
-                grinding = rs.getString("grinding"),
-                price = rs.getLong("price"),
-                discounts = rs.getLong("discounts"),
-            )
+            return@query ProductEntity(rs)
         }
 
         return result.firstOrNull()
