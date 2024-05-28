@@ -3,6 +3,7 @@ package kr.ac.ajou.students.enak.coffeebean.abc
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
+import org.springframework.jdbc.core.namedparam.SqlParameterSource
 import java.sql.ResultSet
 
 abstract class Repository<E : Entity> {
@@ -17,6 +18,11 @@ abstract class Repository<E : Entity> {
 
     protected fun <T> query(query: String, vararg params: Any, parser: (rs: ResultSet) -> T?): List<T?> {
         val result = jdbcTemplate.query(query, wrapMapper(parser), *params)
+        return result
+    }
+
+    protected fun <T> query(query: String, params: SqlParameterSource, parser: (rs: ResultSet) -> T?): List<T?> {
+        val result = jdbcTemplate.query(query, wrapMapper(parser), params)
         return result
     }
 
