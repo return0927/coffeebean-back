@@ -5,14 +5,18 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
 
-abstract class Repository<T : Entity> {
+abstract class Repository<E : Entity> {
     @Autowired
     lateinit var jdbcTemplate: JdbcTemplate
 
-    protected fun query(query: String, vararg params: Any, parser: (rs: ResultSet) -> T?): List<T?> {
-        val result = jdbcTemplate.query(query, RowMapper { rs, rowNum ->
-            return@RowMapper parser(rs)
-        }, *params)
+    companion object {
+        fun <T> wrapMapper(parser: (rs: ResultSet) -> T?) = RowMapper<T> { rs: ResultSet, _: Int ->
+            return@RowMapper parser.invoke(rs)
+        }
+    }
+
+    protected fun <T> query(query: String, vararg params: Any, parser: (rs: ResultSet) -> T?): List<T?> {
+        val result = jdbcTemplate.query(query, wrapMapper(parser), *params)
         return result
     }
 
