@@ -7,18 +7,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/products/")
-class ProductController {
+class ProductController(
+    private val service: ProductService,
+) {
     @GetMapping("/{id}")
-    fun getProductInfo(@PathVariable("id") id: Int): ProductDto {
-        return ProductDto(
-            productId = id,
-            brandName = "A Company Name",
-            origins = "Africa",
-            quantity = 999,
-            processing = "",
-            grinding = "",
-            price = 100000,
-            discounts = 0,
-        )
+    fun getProductInfo(@PathVariable("id") id: Int): ProductDto? {
+        return service.searchByProductId(id.toLong())
     }
 }

@@ -8,7 +8,7 @@ data class ProductDto(
         example = "1",
         required = true,
     )
-    val productId: Int,
+    val productId: Long,
 
     @ApiModelProperty(
         notes = "브랜드(회사) 이름",
@@ -20,41 +20,38 @@ data class ProductDto(
     @ApiModelProperty(
         notes = "원산지",
         example = "Africa",
-        required = true,
     )
-    val origins: String,
+    val origins: String?,
 
     @ApiModelProperty(
         notes = "재고",
         example = "1000",
         required = true,
     )
-    val quantity: Int,
+    val quantity: Long,
 
     @ApiModelProperty(
         notes = "가공법",
-        required = true,
     )
-    val processing: String,
+    val processing: String?,
 
     @ApiModelProperty(
         notes = "원두 분쇄",
-        required = true,
     )
-    val grinding: String,
+    val grinding: String?,
 
     @ApiModelProperty(
         notes = "가격",
         example = "10000",
         required = true,
     )
-    val price: Int,
+    val price: Long,
 
     @ApiModelProperty(
         notes = "할인액",
         example = "0",
         required = true,
     )
-    val discounts: Int,
+    val discounts: Long,
 ) {
 }
