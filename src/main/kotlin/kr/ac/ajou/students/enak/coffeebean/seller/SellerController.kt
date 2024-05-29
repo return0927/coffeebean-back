@@ -8,8 +8,8 @@ class SellerController(
     private val service: SellerService,
 ) {
     @GetMapping("/")
-    fun listSellers(@RequestParam(required = false, defaultValue = "10") size: Int): List<SellerDto> {
-        return service.listSellers(size)
+    fun listSellers(@RequestParam(required = false, defaultValue = "10") size: Int): List<SellerBriefDto> {
+        return service.listSellers(size).map { it.toBrief() }
     }
 
     @GetMapping("/{id}")

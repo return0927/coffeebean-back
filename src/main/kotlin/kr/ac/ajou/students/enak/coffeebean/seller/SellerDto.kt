@@ -31,4 +31,5 @@ data class SellerDto(
     )
     val businessAddress: String,
 ) {
+    fun toBrief() = SellerBriefDto(this)
 }

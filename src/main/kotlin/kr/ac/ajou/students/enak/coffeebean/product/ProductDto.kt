@@ -54,4 +54,5 @@ data class ProductDto(
     )
     val discounts: Long,
 ) {
+    fun toBrief() = ProductBriefDto(this)
 }
