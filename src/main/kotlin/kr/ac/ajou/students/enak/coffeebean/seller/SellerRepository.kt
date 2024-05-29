@@ -1,7 +1,9 @@
 package kr.ac.ajou.students.enak.coffeebean.seller
 
 import kr.ac.ajou.students.enak.coffeebean.abc.Repository
+import org.springframework.stereotype.Component
 
+@Component
 class SellerRepository : Repository<SellerEntity>() {
     fun getById(id: Long): SellerEntity? {
         val result = query("SELECT * FROM producers WHERE id = ?", id) {
