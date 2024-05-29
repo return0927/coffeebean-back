@@ -1,11 +1,18 @@
 package kr.ac.ajou.students.enak.coffeebean.seller
 
 import org.springframework.stereotype.Service
+import kotlin.math.min
 
 @Service
 class SellerService(
     private val repository: SellerRepository,
 ) {
+    fun listSellers(size: Int = 100): List<SellerDto> {
+        return repository.listSellers(min(size, 100)).map {
+            it.toDto()
+        }
+    }
+
     fun getById(id: Long): SellerDto? {
         val result = repository.getById(id)
         return result?.toDto()

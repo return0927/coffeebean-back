@@ -5,6 +5,13 @@ import org.springframework.stereotype.Component
 
 @Component
 class ProductRepository : Repository<ProductEntity>() {
+    fun listProducts(size: Int): List<ProductEntity> {
+        val result = query("SELECT * FROM products LIMIT ?", size) {
+            return@query ProductEntity(it)
+        }
+        return result.filterNotNull()
+    }
+
     fun getProductById(id: Long): ProductEntity? {
         val result = query("SELECT * FROM products WHERE id = ?", id) { rs ->
             return@query ProductEntity(rs)

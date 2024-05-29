@@ -5,6 +5,13 @@ import org.springframework.stereotype.Component
 
 @Component
 class SellerRepository : Repository<SellerEntity>() {
+    fun listSellers(size: Int): List<SellerEntity> {
+        val result = query("SELECT * FROM producers LIMIT ?", size) {
+            return@query SellerEntity(it)
+        }
+        return result.filterNotNull()
+    }
+
     fun getById(id: Long): SellerEntity? {
         val result = query("SELECT * FROM producers WHERE id = ?", id) {
             return@query SellerEntity(it)
