@@ -1,7 +1,7 @@
 package kr.ac.ajou.students.enak.coffeebean.auth
 
 import io.jsonwebtoken.Jwts
-import kr.ac.ajou.students.enak.coffeebean.auth.dto.LoginCustomerDto
+import kr.ac.ajou.students.enak.coffeebean.auth.dto.LoginDto
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.*
@@ -16,7 +16,7 @@ class AuthService(
 ) {
     private val secretKey: String = Base64.getEncoder().encodeToString(secretKey.toByteArray())
 
-    fun createToken(customer: LoginCustomerDto) {
+    fun createToken(customer: LoginDto) {
         val claims = Jwts.claims().setSubject(customer.loginId)
     }
 }

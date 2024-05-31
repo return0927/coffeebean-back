@@ -2,7 +2,7 @@ package kr.ac.ajou.students.enak.coffeebean.auth.dto
 
 import io.swagger.annotations.ApiModelProperty
 
-data class LoginCustomerDto(
+data class LoginDto(
     @ApiModelProperty(
         notes = "로그인 ID",
         example = "bc1916",
