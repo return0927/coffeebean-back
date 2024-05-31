@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "2.5.15"
     id("io.spring.dependency-management") version "1.1.4"
     kotlin("jvm") version "1.9.23"
+    kotlin("plugin.serialization") version "1.9.23"
     kotlin("plugin.spring") version "1.9.23"
     kotlin("plugin.jpa") version "1.9.23"
 }
@@ -41,6 +42,10 @@ dependencies {
     /* DATABASE & SERIALIZATION */
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+
+    /* SERIALIZATION */
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.11")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
     /* MISC */
     implementation("org.jetbrains.kotlin:kotlin-reflect")
