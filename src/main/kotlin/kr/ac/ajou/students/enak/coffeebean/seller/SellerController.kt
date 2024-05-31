@@ -2,7 +2,6 @@ package kr.ac.ajou.students.enak.coffeebean.seller
 
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
-import kr.ac.ajou.students.enak.coffeebean.auth.AuthRequired
 import org.springframework.web.bind.annotation.*
 
 @Api(tags = ["생산자"])
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*
 class SellerController(
     private val service: SellerService,
 ) {
-    @AuthRequired
     @GetMapping("/")
     @ApiOperation("모든 생산자 불러오기")
     fun listSellers(@RequestParam(required = false, defaultValue = "10") size: Int): List<SellerBriefDto> {
