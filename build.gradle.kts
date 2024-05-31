@@ -47,6 +47,9 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
+    /* AUTHORIZATION */
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
+
     testImplementation(boot("starter-test"))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
