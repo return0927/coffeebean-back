@@ -11,3 +11,6 @@ spring:
       ddl-auto: update
     show-sql: false
     database-platform: org.hibernate.dialect.MariaDBDialect
+coffeebean:
+  secretKey: foobar1234
+  valid-duration: 86400
