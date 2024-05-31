@@ -5,6 +5,7 @@ import java.sql.ResultSet
 
 data class CustomerEntity(
     val id: Int,
+    val loginId: String,
     val pw: ByteArray,
     val firstName: String,
     val lastName: String,
@@ -15,6 +16,7 @@ data class CustomerEntity(
 ) : Entity {
     constructor(rs: ResultSet) : this(
         id = rs.getInt("id"),
+        loginId = rs.getString("loginId"),
         pw = rs.getBytes("pw"),
         firstName = rs.getString("firstName"),
         lastName = rs.getString("lastName"),
@@ -31,6 +33,7 @@ data class CustomerEntity(
         other as CustomerEntity
 
         if (id != other.id) return false
+        if (loginId != other.loginId) return false
         if (!pw.contentEquals(other.pw)) return false
         if (firstName != other.firstName) return false
         if (lastName != other.lastName) return false
@@ -44,6 +47,7 @@ data class CustomerEntity(
 
     override fun hashCode(): Int {
         var result = id
+        result = 31 * result + loginId.hashCode()
         result = 31 * result + pw.contentHashCode()
         result = 31 * result + firstName.hashCode()
         result = 31 * result + lastName.hashCode()
