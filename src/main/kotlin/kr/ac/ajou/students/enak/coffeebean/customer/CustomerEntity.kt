@@ -83,4 +83,10 @@ data class CustomerEntity(
         this.contacts = other.contacts
         return this
     }
+
+    fun toDto() = CustomerDto(
+        id = this.id!!,
+        firstName = this.firstName,
+        lastName = this.lastName,
+    )
 }

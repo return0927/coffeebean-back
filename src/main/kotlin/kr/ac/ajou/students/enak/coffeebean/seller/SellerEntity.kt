@@ -1,6 +1,7 @@
 package kr.ac.ajou.students.enak.coffeebean.seller
 
 import kr.ac.ajou.students.enak.coffeebean.abc.Entity
+import kr.ac.ajou.students.enak.coffeebean.product.ProductDto
 import java.sql.ResultSet
 
 data class SellerEntity(
@@ -69,5 +70,21 @@ data class SellerEntity(
         companyName = rs.getString("company_name"),
         companyRegistrationNumber = rs.getLong("company_registration_number"),
         businessAddress = rs.getString("business_address"),
+    )
+
+    fun toDto(
+        products: List<ProductDto>,
+    ): SellerDto = SellerDto(
+        id = this.id!!,
+        companyName = this.companyName,
+        companyRegistrationNumber = this.companyRegistrationNumber,
+        businessAddress = this.businessAddress,
+        products = products,
+    )
+
+    fun toBriefDto(): SellerBriefDto = SellerBriefDto(
+        id = this.id!!,
+        companyName = this.companyName,
+        businessAddress = this.businessAddress,
     )
 }

@@ -7,14 +7,18 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kr.ac.ajou.students.enak.coffeebean.AccountType
+import kr.ac.ajou.students.enak.coffeebean.abc.Entity
 import kr.ac.ajou.students.enak.coffeebean.auth.dto.ScopedLoginDto
 import kr.ac.ajou.students.enak.coffeebean.customer.CustomerEntity
+import kr.ac.ajou.students.enak.coffeebean.errors.AuthRequiredError
+import kr.ac.ajou.students.enak.coffeebean.errors.ReportingError
 import kr.ac.ajou.students.enak.coffeebean.responses.ReportableError
 import kr.ac.ajou.students.enak.coffeebean.seller.SellerEntity
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.util.*
+import javax.servlet.http.HttpServletRequest
 
 @Service
 class AuthService(
@@ -73,7 +77,7 @@ class AuthService(
         val subject = getSubject(token) ?: throw ReportableError("유효하지 않은 토큰입니다.", HttpStatus.INTERNAL_SERVER_ERROR)
         val tokenEntry = tokens[token] ?: throw ReportableError("유효하지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED)
         if (tokenEntry.authScope != subject) throw ReportableError("데이터가 변형된 토큰입니다.", HttpStatus.UNAUTHORIZED)
-        else if (tokenEntry.isValid()) throw ReportableError("이미 만료된 토큰입니다.", HttpStatus.UNAUTHORIZED)
+        else if (!tokenEntry.isValid()) throw ReportableError("이미 만료된 토큰입니다.", HttpStatus.UNAUTHORIZED)
 
         return subject
     }
@@ -94,4 +98,30 @@ class AuthService(
     ) {
         fun isValid() = Date() in createdAt..expiresAt
     }
+}
+
+fun HttpServletRequest.getUserType(): AccountType? = getAttribute("userType") as? AccountType
+
+fun HttpServletRequest.getCustomer(): CustomerEntity? = getAttribute("user") as? CustomerEntity
+
+fun HttpServletRequest.getSeller(): SellerEntity? = getAttribute("user") as? SellerEntity
+
+@Suppress("UNCHECKED_CAST")
+fun <T : Entity> HttpServletRequest.getUser(): T {
+    val accType = getUserType() ?: throw AuthRequiredError()
+    val userRaw = getAttribute("user")
+    val userReified = userRaw as? T
+
+    val reifiedType: AccountType = when (userRaw) {
+        is CustomerEntity -> AccountType.CUSTOMER
+        is SellerEntity -> AccountType.SELLER
+        else -> throw ReportingError("알 수 없는 오류입니다.")
+    }
+    val requiredType: AccountType = when (reifiedType) {
+        AccountType.SELLER -> AccountType.CUSTOMER
+        AccountType.CUSTOMER -> AccountType.SELLER
+    }
+
+    userReified ?: throw AuthRequiredError(requiredType, reifiedType)
+    return userReified
 }

@@ -2,7 +2,7 @@ package kr.ac.ajou.students.enak.coffeebean.errors
 
 import org.springframework.http.HttpStatus
 
-class ReportingError(
+open class ReportingError(
     message: String,
     cause: Throwable? = null,
     val httpStatus: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR,

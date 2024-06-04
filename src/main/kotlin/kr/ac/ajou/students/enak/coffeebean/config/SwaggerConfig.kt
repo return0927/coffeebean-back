@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.RequestHandlerSelectors
-import springfox.documentation.service.ApiKey
 import springfox.documentation.service.AuthorizationScope
 import springfox.documentation.service.Contact
+import springfox.documentation.service.HttpAuthenticationScheme
 import springfox.documentation.service.SecurityReference
 import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spi.service.contexts.SecurityContext
@@ -24,7 +24,7 @@ class SwaggerConfig {
         .build()
 
     @Bean
-    fun api(): Docket = Docket(DocumentationType.SWAGGER_2)
+    fun api(): Docket = Docket(DocumentationType.OAS_30)
         .apiInfo(apiInfo())
         .securityContexts(listOf(securityContext()))
         .securitySchemes(listOf(token()))
@@ -36,11 +36,18 @@ class SwaggerConfig {
     fun securityContext() = SecurityContext.builder()
         .securityReferences(
             listOf(
-                SecurityReference("Authorization", arrayOf(AuthorizationScope("global", "accessEverything"))),
+                SecurityReference("apiToken", arrayOf(AuthorizationScope("global", "accessEverything"))),
             )
         )
         .operationSelector { ctx -> ctx.findAnnotation(AuthRequired::class.java).isPresent }
         .build()
 
-    fun token() = ApiKey("Bearer", "Authorization", "header")
+    //    fun token() = ApiKey("Bearer", "Authorization", "header")
+    fun token() = HttpAuthenticationScheme.JWT_BEARER_BUILDER
+        .name("apiToken")
+        .description("사용자 토큰")
+        .bearerFormat("JWT")
+        .scheme("bearer")
+        .build()
+
 }

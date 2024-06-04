@@ -4,7 +4,6 @@ import kr.ac.ajou.students.enak.coffeebean.auth.AuthService
 import kr.ac.ajou.students.enak.coffeebean.auth.dto.LoginDto
 import kr.ac.ajou.students.enak.coffeebean.auth.dto.NewSellerDto
 import kr.ac.ajou.students.enak.coffeebean.errors.ReportingError
-import kr.ac.ajou.students.enak.coffeebean.product.ProductDto
 import kr.ac.ajou.students.enak.coffeebean.product.ProductService
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -76,20 +75,4 @@ class SellerService(
         val token = authService.createToken(user)
         return SavedSellerDto(user, token)
     }
-
-    private fun SellerEntity.toBriefDto(): SellerBriefDto = SellerBriefDto(
-        id = this.id!!,
-        companyName = this.companyName,
-        businessAddress = this.businessAddress,
-    )
-
-    private fun SellerEntity.toDto(
-        products: List<ProductDto>,
-    ): SellerDto = SellerDto(
-        id = this.id!!,
-        companyName = this.companyName,
-        companyRegistrationNumber = this.companyRegistrationNumber,
-        businessAddress = this.businessAddress,
-        products = products,
-    )
 }
