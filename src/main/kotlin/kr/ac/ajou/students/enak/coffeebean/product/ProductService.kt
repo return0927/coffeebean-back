@@ -36,6 +36,7 @@ class ProductService(
             grinding = grinding,
             price = price,
             discounts = discounts,
+            imageUrl = imageUrl,
         )
     }
 }

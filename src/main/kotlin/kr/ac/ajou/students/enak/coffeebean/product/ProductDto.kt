@@ -53,6 +53,12 @@ data class ProductDto(
         required = true,
     )
     val discounts: Long,
+
+    @ApiModelProperty(
+        notes = "이미지 URL",
+        required = true,
+    )
+    val imageUrl: String,
 ) {
     fun toBrief() = ProductBriefDto(this)
 }

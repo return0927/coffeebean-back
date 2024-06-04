@@ -12,6 +12,7 @@ data class ProductEntity(
     var grinding: String? = null,
     var price: Long,
     var discounts: Long,
+    var imageUrl: String,
 ) : Entity {
     private val lastSyncedMatrix: MutableMap<String, Any> = hashMapOf()
 
@@ -33,5 +34,6 @@ data class ProductEntity(
         grinding = rs.getString("grinding"),
         price = rs.getLong("price"),
         discounts = rs.getLong("discounts"),
+        imageUrl = rs.getString("image_url") ?: "",
     )
 }
