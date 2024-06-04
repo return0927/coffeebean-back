@@ -69,13 +69,13 @@ class AuthService(
         null
     }
 
-    fun validateToken(token: String): TokenEntry {
+    fun validateToken(token: String): AuthScope {
         val subject = getSubject(token) ?: throw ReportableError("유효하지 않은 토큰입니다.", HttpStatus.INTERNAL_SERVER_ERROR)
         val tokenEntry = tokens[token] ?: throw ReportableError("유효하지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED)
         if (tokenEntry.authScope != subject) throw ReportableError("데이터가 변형된 토큰입니다.", HttpStatus.UNAUTHORIZED)
         else if (tokenEntry.isValid()) throw ReportableError("이미 만료된 토큰입니다.", HttpStatus.UNAUTHORIZED)
 
-        return tokenEntry
+        return subject
     }
 
     @Serializable

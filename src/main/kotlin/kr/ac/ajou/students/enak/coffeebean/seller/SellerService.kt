@@ -44,6 +44,11 @@ class SellerService(
         )
     }
 
+    fun getViaLogin(loginId: String): SellerEntity? {
+        val result = repository.findByLoginId(loginId)
+        return result
+    }
+
     fun handleRegister(dto: NewSellerDto): SavedSellerDto {
         val user = repository.findByLoginId(dto.loginId)
             ?.run { throw ReportingError("이미 가입된 아이디입니다.", HttpStatus.BAD_REQUEST) }

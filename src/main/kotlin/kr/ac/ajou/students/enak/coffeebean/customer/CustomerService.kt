@@ -52,4 +52,8 @@ class CustomerService(
         val token = authService.createToken(user)
         return SavedCustomerDto(user, token)
     }
+
+    fun getViaLogin(loginId: String): CustomerEntity? {
+        return customerRepository.findUserByLoginId(loginId)
+    }
 }
