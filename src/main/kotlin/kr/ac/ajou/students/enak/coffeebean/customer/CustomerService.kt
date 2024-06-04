@@ -1,6 +1,7 @@
 package kr.ac.ajou.students.enak.coffeebean.customer
 
 import kr.ac.ajou.students.enak.coffeebean.auth.AuthService
+import kr.ac.ajou.students.enak.coffeebean.auth.dto.LoginDto
 import kr.ac.ajou.students.enak.coffeebean.auth.dto.NewCustomerDto
 import kr.ac.ajou.students.enak.coffeebean.errors.ReportingError
 import org.springframework.http.HttpStatus
@@ -39,5 +40,16 @@ class CustomerService(
         val saved = customerRepository.insert(user)
         val token = authService.createToken(saved)
         return SavedCustomerDto(saved, token)
+    }
+
+    fun handleLogin(dto: LoginDto): SavedCustomerDto {
+        val user = customerRepository.findUserByLoginId(dto.loginId)
+            ?: throw ReportingError("아이디가 존재하지 않거나 비밀번호가 틀렸습니다.", HttpStatus.BAD_REQUEST)
+
+        if (!user.pw.contentEquals(hashPassword(dto.password)))
+            throw ReportingError("아이디가 존재하지 않거나 비밀번호가 틀렸습니다.", HttpStatus.BAD_REQUEST)
+
+        val token = authService.createToken(user)
+        return SavedCustomerDto(user, token)
     }
 }

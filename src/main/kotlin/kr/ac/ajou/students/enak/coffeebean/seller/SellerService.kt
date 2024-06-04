@@ -1,6 +1,7 @@
 package kr.ac.ajou.students.enak.coffeebean.seller
 
 import kr.ac.ajou.students.enak.coffeebean.auth.AuthService
+import kr.ac.ajou.students.enak.coffeebean.auth.dto.LoginDto
 import kr.ac.ajou.students.enak.coffeebean.auth.dto.NewSellerDto
 import kr.ac.ajou.students.enak.coffeebean.errors.ReportingError
 import kr.ac.ajou.students.enak.coffeebean.product.ProductDto
@@ -58,6 +59,17 @@ class SellerService(
         val saved = repository.insert(user)
         val token = authService.createToken(saved)
         return SavedSellerDto(saved, token)
+    }
+
+    fun handleLogin(dto: LoginDto): SavedSellerDto {
+        val user = repository.findByLoginId(dto.loginId)
+            ?: throw ReportingError("아이디가 존재하지 않거나 비밀번호가 틀렸습니다.", HttpStatus.BAD_REQUEST)
+
+        if (!user.pw.contentEquals(hashPassword(dto.password)))
+            throw ReportingError("아이디가 존재하지 않거나 비밀번호가 틀렸습니다.", HttpStatus.BAD_REQUEST)
+
+        val token = authService.createToken(user)
+        return SavedSellerDto(user, token)
     }
 
     private fun SellerEntity.toBriefDto(): SellerBriefDto = SellerBriefDto(
