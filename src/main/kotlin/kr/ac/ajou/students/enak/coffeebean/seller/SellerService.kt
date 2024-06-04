@@ -24,7 +24,7 @@ class SellerService(
     }
 
     private fun SellerEntity.toDto(): SellerDto = SellerDto(
-        id = this.id,
+        id = this.id!!,
         companyName = this.companyName,
         companyRegistrationNumber = this.companyRegistrationNumber,
         businessAddress = this.businessAddress,

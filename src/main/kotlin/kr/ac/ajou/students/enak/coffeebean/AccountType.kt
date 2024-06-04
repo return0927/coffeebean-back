@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class AccountType {
-    PRODUCER,
+    CUSTOMER,
     SELLER,
     ;
 

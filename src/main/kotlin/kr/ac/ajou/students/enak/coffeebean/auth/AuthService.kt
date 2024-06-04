@@ -8,7 +8,9 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kr.ac.ajou.students.enak.coffeebean.AccountType
 import kr.ac.ajou.students.enak.coffeebean.auth.dto.ScopedLoginDto
+import kr.ac.ajou.students.enak.coffeebean.customer.CustomerEntity
 import kr.ac.ajou.students.enak.coffeebean.responses.ReportableError
+import kr.ac.ajou.students.enak.coffeebean.seller.SellerEntity
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -30,8 +32,13 @@ class AuthService(
 
     private val tokens: MutableMap<String, TokenEntry> = hashMapOf()
 
-    fun createToken(user: ScopedLoginDto): TokenEntry {
-        val scope = AuthScope(user)
+    fun createToken(user: CustomerEntity) = createToken(AuthScope(AccountType.CUSTOMER, user.loginId))
+
+    fun createToken(user: SellerEntity) = createToken(AuthScope(AccountType.SELLER, user.loginId))
+
+    fun createToken(user: ScopedLoginDto): TokenEntry = createToken(AuthScope(user))
+
+    fun createToken(scope: AuthScope): TokenEntry {
         val scopeString = json.encodeToString(scope)
 
         val claims = Jwts.claims().setSubject(scopeString)

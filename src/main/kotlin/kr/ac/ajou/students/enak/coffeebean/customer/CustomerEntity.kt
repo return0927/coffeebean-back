@@ -1,27 +1,40 @@
-package kr.ac.ajou.students.enak.coffeebean.auth.entity
+package kr.ac.ajou.students.enak.coffeebean.customer
 
 import kr.ac.ajou.students.enak.coffeebean.abc.Entity
 import java.sql.ResultSet
+import java.util.*
+
 
 data class CustomerEntity(
-    val id: Int,
-    val loginId: String,
-    val pw: ByteArray,
-    val firstName: String,
-    val lastName: String,
-    val gender: Int,
-    val registrationDate: java.sql.Date,
-    val birthday: java.sql.Date,
-    val contacts: String,
+    var id: Int? = null,
+    var loginId: String,
+    var pw: ByteArray,
+    var firstName: String,
+    var lastName: String,
+    var gender: Int,
+    var registrationDate: Date,
+    var birthday: Date,
+    var contacts: String,
 ) : Entity {
+    private val lastSyncedMatrix: MutableMap<String, Any> = hashMapOf()
+
+    var isDirty: Boolean = false
+        private set
+
+    override fun getLastSyncedMatrix(): MutableMap<String, Any> = this.lastSyncedMatrix
+
+    override fun markDirty() {
+        this.isDirty = true
+    }
+
     constructor(rs: ResultSet) : this(
         id = rs.getInt("id"),
-        loginId = rs.getString("loginId"),
+        loginId = rs.getString("login_id"),
         pw = rs.getBytes("pw"),
-        firstName = rs.getString("firstName"),
-        lastName = rs.getString("lastName"),
+        firstName = rs.getString("first_name"),
+        lastName = rs.getString("last_name"),
         gender = rs.getInt("gender"),
-        registrationDate = rs.getDate("registrationDate"),
+        registrationDate = rs.getDate("registration_date"),
         birthday = rs.getDate("birthday"),
         contacts = rs.getString("contacts"),
     )
@@ -46,7 +59,7 @@ data class CustomerEntity(
     }
 
     override fun hashCode(): Int {
-        var result = id
+        var result = id ?: 0
         result = 31 * result + loginId.hashCode()
         result = 31 * result + pw.contentHashCode()
         result = 31 * result + firstName.hashCode()
@@ -56,5 +69,18 @@ data class CustomerEntity(
         result = 31 * result + birthday.hashCode()
         result = 31 * result + contacts.hashCode()
         return result
+    }
+
+    fun copyFrom(other: CustomerEntity): CustomerEntity {
+        this.id = other.id
+        this.loginId = other.loginId
+        this.pw = other.pw
+        this.firstName = other.firstName
+        this.lastName = other.lastName
+        this.gender = other.gender
+        this.registrationDate = other.registrationDate
+        this.birthday = other.birthday
+        this.contacts = other.contacts
+        return this
     }
 }
