@@ -11,6 +11,13 @@ data class ProductDto(
     val productId: Long,
 
     @ApiModelProperty(
+        notes = "상품명",
+        example = "",
+        required = true,
+    )
+    val name: String,
+
+    @ApiModelProperty(
         notes = "브랜드(회사) 이름",
         example = "A Company Name",
         required = true,

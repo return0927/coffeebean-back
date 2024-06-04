@@ -29,6 +29,7 @@ class ProductService(
     private fun ProductEntity.toDto(): ProductDto {
         return ProductDto(
             productId = id,
+            name = name,
             brandName = brandName,
             origins = origins,
             quantity = quantity,

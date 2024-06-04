@@ -5,6 +5,7 @@ import java.sql.ResultSet
 
 data class ProductEntity(
     val id: Long,
+    var name: String,
     var brandName: String,
     var origins: String? = null,
     var quantity: Long,
@@ -27,6 +28,7 @@ data class ProductEntity(
 
     constructor(rs: ResultSet) : this(
         id = rs.getLong("id"),
+        name = rs.getString("name"),
         brandName = rs.getString("brand_name"),
         origins = rs.getString("origins"),
         quantity = rs.getLong("quantity"),
