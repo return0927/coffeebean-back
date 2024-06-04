@@ -6,7 +6,16 @@ data class ProductBriefDto(
     val brandName: String,
     val price: Long,
     val discounts: Long,
+    val quantity: Long,
     val imageUrl: String,
 ) {
-    constructor(dto: ProductDto) : this(dto.productId, dto.name, dto.brandName, dto.price, dto.discounts, dto.imageUrl)
+    constructor(dto: ProductDto) : this(
+        dto.productId,
+        dto.name,
+        dto.brandName,
+        dto.price,
+        dto.discounts,
+        dto.quantity,
+        dto.imageUrl,
+    )
 }
