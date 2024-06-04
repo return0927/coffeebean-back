@@ -52,6 +52,16 @@ data class SellerEntity(
         return result
     }
 
+    fun copyFrom(fetched: SellerEntity): SellerEntity {
+        this.id = fetched.id
+        this.loginId = fetched.loginId
+        this.pw = fetched.pw
+        this.companyName = fetched.companyName
+        this.companyRegistrationNumber = fetched.companyRegistrationNumber
+        this.businessAddress = fetched.businessAddress
+        return this
+    }
+
     constructor(rs: ResultSet) : this(
         id = rs.getLong("id"),
         loginId = rs.getString("login_id"),
