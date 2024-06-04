@@ -19,4 +19,11 @@ class ProductRepository : Repository<ProductEntity>() {
 
         return result.firstOrNull()
     }
+
+    fun listProductsBySellerName(brandName: String): List<ProductEntity> {
+        val result = query("SELECT * FROM products WHERE brand_name = ?", brandName) { rs ->
+            return@query ProductEntity(rs)
+        }
+        return result.filterNotNull()
+    }
 }

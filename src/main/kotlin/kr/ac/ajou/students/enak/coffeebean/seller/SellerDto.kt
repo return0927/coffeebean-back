@@ -1,6 +1,7 @@
 package kr.ac.ajou.students.enak.coffeebean.seller
 
 import io.swagger.annotations.ApiModelProperty
+import kr.ac.ajou.students.enak.coffeebean.product.ProductDto
 
 data class SellerDto(
     @ApiModelProperty(
@@ -30,6 +31,12 @@ data class SellerDto(
         required = true,
     )
     val businessAddress: String,
+
+    @ApiModelProperty(
+        notes = "등록된 상품",
+        required = true,
+    )
+    val products: List<ProductDto>,
 ) {
     fun toBrief() = SellerBriefDto(this)
 }

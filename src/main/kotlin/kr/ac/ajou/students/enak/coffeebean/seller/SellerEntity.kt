@@ -54,7 +54,7 @@ data class SellerEntity(
 
     constructor(rs: ResultSet) : this(
         id = rs.getLong("id"),
-        loginId = rs.getString("loginId"),
+        loginId = rs.getString("login_id"),
         pw = rs.getBytes("pw"),
         companyName = rs.getString("company_name"),
         companyRegistrationNumber = rs.getLong("company_registration_number"),

@@ -1,5 +1,6 @@
 package kr.ac.ajou.students.enak.coffeebean.product
 
+import kr.ac.ajou.students.enak.coffeebean.seller.SellerEntity
 import org.springframework.stereotype.Service
 import kotlin.math.min
 
@@ -15,6 +16,14 @@ class ProductService(
 
     fun searchByProductId(id: Long): ProductDto? {
         return repository.getProductById(id)?.toDto()
+    }
+
+    fun listProductsBySeller(seller: SellerEntity): List<ProductDto> {
+        val name = seller.companyName
+
+        return repository.listProductsBySellerName(name).map {
+            it.toDto()
+        }
     }
 
     private fun ProductEntity.toDto(): ProductDto {

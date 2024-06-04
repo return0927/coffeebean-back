@@ -13,7 +13,7 @@ class SellerController(
     @GetMapping("/")
     @ApiOperation("모든 생산자 불러오기")
     fun listSellers(@RequestParam(required = false, defaultValue = "10") size: Int): List<SellerBriefDto> {
-        return service.listSellers(size).map { it.toBrief() }
+        return service.listSellerBrief(size)
     }
 
     @GetMapping("/{id}")
