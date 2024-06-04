@@ -9,7 +9,7 @@ data class SavedSellerDto(
 ) {
     constructor(entity: SellerEntity, token: AuthService.TokenEntry) : this(
         loginId = entity.loginId,
-        businessName = entity.businessAddress,
+        businessName = entity.companyName,
         token = token,
     )
 }
