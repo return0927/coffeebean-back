@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty
 data class LoginDto(
     @ApiModelProperty(
         notes = "로그인 ID",
-        example = "bc1916",
+        example = "ajou",
         required = true,
     )
     val loginId: String,
