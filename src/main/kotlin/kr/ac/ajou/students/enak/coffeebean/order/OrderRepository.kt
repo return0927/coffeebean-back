@@ -24,6 +24,18 @@ class OrderRepository : Repository<OrderEntity>() {
         }.filterNotNull()
     }
 
+    fun findBySellerId(id: Long): List<OrderEntity> {
+        return query(
+            "SELECT orders.* " +
+                    "FROM orders, products, producers " +
+                    "WHERE orders.item_id = products.id " +
+                    "  AND products.brand_name = producers.company_name" +
+                    "  AND producers.id = ?;", id
+        ) { rs ->
+            return@query OrderEntity(rs)
+        }.filterNotNull()
+    }
+
     fun saveNewOrder(order: OrderEntity): OrderEntity {
         val fetched = query(
             "INSERT INTO orders " +

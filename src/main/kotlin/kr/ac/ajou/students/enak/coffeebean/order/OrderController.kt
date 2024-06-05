@@ -2,9 +2,10 @@ package kr.ac.ajou.students.enak.coffeebean.order
 
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
-import kr.ac.ajou.students.enak.coffeebean.auth.AuthRequired
-import kr.ac.ajou.students.enak.coffeebean.auth.getUser
+import kr.ac.ajou.students.enak.coffeebean.AccountType
+import kr.ac.ajou.students.enak.coffeebean.auth.*
 import kr.ac.ajou.students.enak.coffeebean.customer.CustomerEntity
+import kr.ac.ajou.students.enak.coffeebean.errors.AuthRequiredError
 import kr.ac.ajou.students.enak.coffeebean.errors.ReportingError
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -18,10 +19,13 @@ class OrderController(
 ) {
     @GetMapping("/")
     @AuthRequired
-    @ApiOperation("내 주문 모두 불러오기")
+    @ApiOperation("내 주문 모두 불러오기", notes = "소비자로 로그인 한 경우에는 내가 주문한 것들이, 판매자로 로그인 한 경우에는 내 상품의 주문이 나옴")
     fun getMyOrders(req: HttpServletRequest): List<OrderDto> {
-        val customer: CustomerEntity = req.getUser()
-        return orderService.getAllOrdersOfCustomer(customer)
+        return when (req.getUserType()) {
+            AccountType.CUSTOMER -> orderService.getAllOrdersOfCustomer(req.getCustomer()!!)
+            AccountType.SELLER -> orderService.getAllOrdersOfSeller(req.getSeller()!!)
+            else -> throw AuthRequiredError()
+        }
     }
 
     @PutMapping("/")

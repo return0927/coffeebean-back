@@ -3,6 +3,7 @@ package kr.ac.ajou.students.enak.coffeebean.order
 import kr.ac.ajou.students.enak.coffeebean.customer.CustomerEntity
 import kr.ac.ajou.students.enak.coffeebean.errors.ReportingError
 import kr.ac.ajou.students.enak.coffeebean.product.ProductService
+import kr.ac.ajou.students.enak.coffeebean.seller.SellerEntity
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.util.*
@@ -14,6 +15,9 @@ class OrderService(
 ) {
     fun getAllOrdersOfCustomer(entity: CustomerEntity): List<OrderDto> =
         orderRepository.findByCustomerId(entity.id!!).map { OrderDto(it) }
+
+    fun getAllOrdersOfSeller(seller: SellerEntity): List<OrderDto> =
+        orderRepository.findBySellerId(seller.id!!).map { OrderDto(it) }
 
     fun getOrderOnBehalfOf(customer: CustomerEntity, orderId: Int): OrderDto? {
         val order = orderRepository.findByOrderId(orderId) ?: return null
