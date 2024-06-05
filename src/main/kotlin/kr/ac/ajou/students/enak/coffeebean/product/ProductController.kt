@@ -39,7 +39,7 @@ class ProductController(
         @RequestParam(value = "kind", defaultValue = "unset") kind: String,
         @RequestParam(value = "amount", defaultValue = "unset") amount: String,
         @RequestParam(value = "origin", defaultValue = "unset") origin: String,
-        @RequestParam(value = "sort", defaultValue = "newest") sort: ProductSortMethod,
+        @RequestParam(value = "sort", defaultValue = "NEWEST") sort: ProductSortMethod,
     ): List<ProductBriefDto> {
         val kind = if (kind == "unset") null else kind
         val amount = when (amount) {
