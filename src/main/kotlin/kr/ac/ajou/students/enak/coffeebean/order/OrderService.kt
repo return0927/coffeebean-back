@@ -9,4 +9,10 @@ class OrderService(
 ) {
     fun getAllOrdersOfCustomer(entity: CustomerEntity): List<OrderDto> =
         orderRepository.findByCustomerId(entity.id!!).map { OrderDto(it) }
+
+    fun getOrderOnBehalfOf(customer: CustomerEntity, orderId: Int): OrderDto? {
+        val order = orderRepository.findByOrderId(orderId) ?: return null
+        if (order.customerId != customer.id) return null
+        return OrderDto(order)
+    }
 }
