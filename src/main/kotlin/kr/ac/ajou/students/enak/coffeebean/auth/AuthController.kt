@@ -1,5 +1,7 @@
 package kr.ac.ajou.students.enak.coffeebean.auth
 
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
 import kr.ac.ajou.students.enak.coffeebean.AccountType
 import kr.ac.ajou.students.enak.coffeebean.auth.dto.LoginDto
 import kr.ac.ajou.students.enak.coffeebean.auth.dto.NewCustomerDto
@@ -12,37 +14,40 @@ import kr.ac.ajou.students.enak.coffeebean.seller.SavedSellerDto
 import kr.ac.ajou.students.enak.coffeebean.seller.SellerEntity
 import kr.ac.ajou.students.enak.coffeebean.seller.SellerService
 import org.springframework.web.bind.annotation.*
-import springfox.documentation.schema.property.bean.AccessorsProvider
 import javax.servlet.http.HttpServletRequest
 
+@Api(tags = ["1. 인증"])
 @RestController
 @RequestMapping("/api/")
 class AuthController(
-    private val authService: AuthService,
     private val customerService: CustomerService,
     private val producerService: SellerService,
-    private val accessorsProvider: AccessorsProvider,
 ) {
+    @ApiOperation("회원가입 - 소비자")
     @PutMapping("/register/customer")
     fun putCustomer(@RequestBody dto: NewCustomerDto): SavedCustomerDto {
         return customerService.handleRegister(dto)
     }
 
+    @ApiOperation("회원가입 - 판매자")
     @PutMapping("/register/producer")
     fun putProducer(@RequestBody dto: NewSellerDto): SavedSellerDto {
         return producerService.handleRegister(dto)
     }
 
+    @ApiOperation("로그인 - 소비자")
     @PostMapping("/login/customer")
     fun loginCustomer(@RequestBody dto: LoginDto): SavedCustomerDto {
         return customerService.handleLogin(dto)
     }
 
+    @ApiOperation("로그인 - 생산자")
     @PostMapping("/login/producer")
     fun loginProducer(@RequestBody dto: LoginDto): SavedSellerDto {
         return producerService.handleLogin(dto)
     }
 
+    @ApiOperation("내 정보 가져오기")
     @GetMapping("/me")
     @AuthRequired
     fun whoAmI(req: HttpServletRequest): Any {

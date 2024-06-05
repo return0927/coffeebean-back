@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 
-@Api(tags = ["주문 관리"])
+@Api(tags = ["4. 주문 관리"])
 @RestController
 @RequestMapping("/api/orders")
 class OrderController(

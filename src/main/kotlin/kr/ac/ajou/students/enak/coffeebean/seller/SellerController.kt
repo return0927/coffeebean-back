@@ -4,7 +4,7 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.web.bind.annotation.*
 
-@Api(tags = ["생산자"])
+@Api(tags = ["3. 생산자"])
 @RestController
 @RequestMapping("/api/sellers/")
 class SellerController(
