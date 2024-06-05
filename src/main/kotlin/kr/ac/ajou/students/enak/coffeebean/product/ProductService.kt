@@ -34,7 +34,7 @@ class ProductService(
 
     private fun ProductEntity.toDto(): ProductDto {
         return ProductDto(
-            productId = id,
+            productId = id!!,
             name = name,
             brandName = brandName,
             origins = origins,
@@ -45,5 +45,20 @@ class ProductService(
             discounts = discounts,
             imageUrl = imageUrl,
         )
+    }
+
+    fun createNewProduct(seller: SellerEntity, dto: NewProductDto): ProductDto {
+        val product = ProductEntity(
+            name = dto.name,
+            brandName = seller.companyName,
+            origins = dto.origins,
+            quantity = dto.quantity,
+            processing = dto.processing,
+            grinding = dto.grinding,
+            price = dto.price,
+            discounts = dto.discounts,
+            imageUrl = dto.imageUrl,
+        )
+        return repository.createNewEntity(product).toDto()
     }
 }

@@ -65,6 +65,14 @@ class ProductController(
     }
 
     @AuthRequired
+    @PostMapping("/")
+    @ApiOperation("새 상품 만들기")
+    fun createNewProduct(req: HttpServletRequest, @RequestBody dto: NewProductDto): ProductDto {
+        val seller: SellerEntity = req.getUser()
+        return service.createNewProduct(seller, dto)
+    }
+
+    @AuthRequired
     @GetMapping("/my")
     @ApiOperation("(판매자용) 내 상품 목록 가져오기")
     fun getProductBySellerId(req: HttpServletRequest): List<ProductDto> {

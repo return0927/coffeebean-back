@@ -4,13 +4,13 @@ import kr.ac.ajou.students.enak.coffeebean.abc.Entity
 import java.sql.ResultSet
 
 data class ProductEntity(
-    val id: Int,
+    var id: Int? = null,
     var name: String,
     var brandName: String,
-    var origins: String? = null,
+    var origins: String,
     var quantity: Long,
-    var processing: String? = null,
-    var grinding: String? = null,
+    var processing: String,
+    var grinding: String,
     var price: Long,
     var discounts: Long,
     var imageUrl: String,

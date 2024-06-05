@@ -64,4 +64,23 @@ class ProductRepository : Repository<ProductEntity>() {
         }
         return result.filterNotNull()
     }
+
+    fun createNewEntity(product: ProductEntity): ProductEntity {
+        return query(
+            "INSERT INTO products (name, brand_name, origins, quantity, processing, grinding, price, discounts, image_url) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                    "RETURNING *;",
+            product.name,
+            product.brandName,
+            product.origins,
+            product.quantity,
+            product.processing,
+            product.grinding,
+            product.price,
+            product.discounts,
+            product.imageUrl,
+        ) {
+            return@query ProductEntity(it)
+        }.firstOrNull() ?: throw ReportingError("상품 $product (을)를 저장하는데 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR)
+    }
 }
