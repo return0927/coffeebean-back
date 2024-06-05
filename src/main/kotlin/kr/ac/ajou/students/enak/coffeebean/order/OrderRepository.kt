@@ -76,7 +76,7 @@ class OrderRepository : Repository<OrderEntity>() {
 
         query(
             "UPDATE orders " +
-                    "SET " + queries.joinToString(" and ") + " " +
+                    "SET " + queries.joinToString(" , ") + " " +
                     "WHERE id = ?;",
             *arguments.toTypedArray(),
             orderId,

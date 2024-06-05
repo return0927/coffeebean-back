@@ -88,13 +88,13 @@ class ProductRepository : Repository<ProductEntity>() {
         query(
             "UPDATE products " +
                     "SET " +
-                    "name = ? " +
-                    "origins = ? " +
-                    "quantity = ? " +
-                    "processing = ? " +
-                    "grinding = ? " +
-                    "price = ? " +
-                    "discounts = ? " +
+                    "name = ? , " +
+                    "origins = ? , " +
+                    "quantity = ? , " +
+                    "processing = ? , " +
+                    "grinding = ? , " +
+                    "price = ? , " +
+                    "discounts = ? , " +
                     "image_url = ? " +
                     "WHERE id = ?;",
             product.name,
