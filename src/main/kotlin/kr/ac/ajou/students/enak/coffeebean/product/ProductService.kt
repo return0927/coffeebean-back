@@ -8,8 +8,14 @@ import kotlin.math.min
 class ProductService(
     private val repository: ProductRepository,
 ) {
-    fun listProducts(size: Int): List<ProductDto> {
-        return repository.listProducts(min(size, 100)).map {
+    fun listProducts(
+        size: Int,
+        kind: String?,
+        amount: Int?,
+        origin: String?,
+        sort: ProductController.Companion.ProductSortMethod,
+    ): List<ProductDto> {
+        return repository.listProducts(min(size, 100), kind, amount, origin, sort).map {
             it.toDto()
         }
     }
