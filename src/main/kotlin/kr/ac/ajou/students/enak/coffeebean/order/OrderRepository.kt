@@ -74,16 +74,17 @@ class OrderRepository : Repository<OrderEntity>() {
             arguments.add(arg!!)
         }
 
-        val fetched = query(
+        query(
             "UPDATE orders " +
-                    "SET " + queries.joinToString(" and ") +
-                    "WHERE id = ? " +
-                    "RETURNING *;",
+                    "SET " + queries.joinToString(" and ") + " " +
+                    "WHERE id = ?;",
             *arguments.toTypedArray(),
             orderId,
         ) {
             return@query OrderEntity(it)
-        }.firstOrNull()
+        }
+
+        val fetched = findByOrderId(orderId)
             ?: throw ReportingError("상품 $orderId (을)를 찾지 못했습니다.", HttpStatus.NOT_FOUND)
         return fetched
     }
