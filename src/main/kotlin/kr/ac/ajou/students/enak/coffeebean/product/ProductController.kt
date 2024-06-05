@@ -2,9 +2,13 @@ package kr.ac.ajou.students.enak.coffeebean.product
 
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import kr.ac.ajou.students.enak.coffeebean.auth.AuthRequired
+import kr.ac.ajou.students.enak.coffeebean.auth.getUser
 import kr.ac.ajou.students.enak.coffeebean.errors.ReportingError
+import kr.ac.ajou.students.enak.coffeebean.seller.SellerEntity
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletRequest
 
 @Api(tags = ["2. 상품"])
 @RestController
@@ -58,5 +62,13 @@ class ProductController(
     @ApiOperation("상품 정보 가져오기")
     fun getProductInfo(@PathVariable("id") id: Int): ProductDto? {
         return service.searchByProductId(id)
+    }
+
+    @AuthRequired
+    @GetMapping("/my")
+    @ApiOperation("(판매자용) 내 상품 목록 가져오기")
+    fun getProductBySellerId(req: HttpServletRequest): List<ProductDto> {
+        val seller: SellerEntity = req.getUser()
+        return service.listProductsBySeller(seller)
     }
 }
