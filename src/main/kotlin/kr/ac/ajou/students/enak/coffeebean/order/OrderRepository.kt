@@ -85,7 +85,7 @@ class OrderRepository : Repository<OrderEntity>() {
         }
 
         val fetched = findByOrderId(orderId)
-            ?: throw ReportingError("상품 $orderId (을)를 찾지 못했습니다.", HttpStatus.NOT_FOUND)
+            ?: throw ReportingError("주문 $orderId (을)를 찾지 못했습니다.", HttpStatus.NOT_FOUND)
         return fetched
     }
 }

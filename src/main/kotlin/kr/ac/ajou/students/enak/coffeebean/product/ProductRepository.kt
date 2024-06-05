@@ -83,4 +83,35 @@ class ProductRepository : Repository<ProductEntity>() {
             return@query ProductEntity(it)
         }.firstOrNull() ?: throw ReportingError("상품 $product (을)를 저장하는데 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR)
     }
+
+    fun updateProduct(product: ProductEntity): ProductEntity {
+        query(
+            "UPDATE products " +
+                    "SET " +
+                    "name = ? " +
+                    "origins = ? " +
+                    "quantity = ? " +
+                    "processing = ? " +
+                    "grinding = ? " +
+                    "price = ? " +
+                    "discounts = ? " +
+                    "image_url = ? " +
+                    "WHERE id = ?;",
+            product.name,
+            product.origins,
+            product.quantity,
+            product.processing,
+            product.grinding,
+            product.price,
+            product.discounts,
+            product.imageUrl,
+            product.id!!
+        ) {
+            return@query ProductEntity(it)
+        }
+
+        val fetched = getProductById(product.id!!)
+            ?: throw ReportingError("상품 ${product.id} (을_를 찾지 못했습니다.")
+        return fetched
+    }
 }

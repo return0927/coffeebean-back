@@ -73,6 +73,18 @@ class ProductController(
     }
 
     @AuthRequired
+    @PutMapping("/{id}")
+    @ApiOperation("상품 정보 업데이트 하기")
+    fun updateProduct(
+        req: HttpServletRequest,
+        @PathVariable id: Int,
+        @RequestBody dto: UpdateProductDto,
+    ): ProductDto {
+        val seller: SellerEntity = req.getUser()
+        return service.updateProduct(seller, id, dto)
+    }
+
+    @AuthRequired
     @GetMapping("/my")
     @ApiOperation("(판매자용) 내 상품 목록 가져오기")
     fun getProductBySellerId(req: HttpServletRequest): List<ProductDto> {

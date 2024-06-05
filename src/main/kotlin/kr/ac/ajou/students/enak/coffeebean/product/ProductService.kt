@@ -1,6 +1,8 @@
 package kr.ac.ajou.students.enak.coffeebean.product
 
+import kr.ac.ajou.students.enak.coffeebean.errors.ReportingError
 import kr.ac.ajou.students.enak.coffeebean.seller.SellerEntity
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import kotlin.math.min
 
@@ -60,5 +62,25 @@ class ProductService(
             imageUrl = dto.imageUrl,
         )
         return repository.createNewEntity(product).toDto()
+    }
+
+    fun updateProduct(seller: SellerEntity, id: Int, dto: UpdateProductDto): ProductDto {
+        val product = repository.getProductById(id)
+            ?: throw ReportingError("상품 $id (을)를 찾을 수 없습니다.", HttpStatus.NOT_FOUND)
+
+        if (product.brandName != seller.companyName)
+            throw ReportingError("해당 상품을 수정할 권한이 없습니다.", HttpStatus.FORBIDDEN)
+
+        if (dto.name != null) product.name = dto.name
+        if (dto.origins != null) product.origins = dto.origins
+        if (dto.quantity != null) product.quantity = dto.quantity
+        if (dto.processing != null) product.processing = dto.processing
+        if (dto.grinding != null) product.grinding = dto.grinding
+        if (dto.price != null) product.price = dto.price
+        if (dto.discounts != null) product.discounts = dto.discounts
+        if (dto.imageUrl != null) product.imageUrl = dto.imageUrl
+
+        return repository.updateProduct(product).toDto()
+
     }
 }
