@@ -19,6 +19,6 @@ class ProductController(
     @GetMapping("/{id}")
     @ApiOperation("상품 정보 가져오기")
     fun getProductInfo(@PathVariable("id") id: Int): ProductDto? {
-        return service.searchByProductId(id.toLong())
+        return service.searchByProductId(id)
     }
 }

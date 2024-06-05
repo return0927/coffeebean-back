@@ -1,7 +1,7 @@
 package kr.ac.ajou.students.enak.coffeebean.product
 
 data class ProductBriefDto(
-    val productId: Long,
+    val productId: Int,
     val name: String,
     val brandName: String,
     val price: Long,

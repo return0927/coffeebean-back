@@ -7,10 +7,7 @@ import kr.ac.ajou.students.enak.coffeebean.auth.getUser
 import kr.ac.ajou.students.enak.coffeebean.customer.CustomerEntity
 import kr.ac.ajou.students.enak.coffeebean.errors.ReportingError
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 
 @Api(tags = ["주문 관리"])
@@ -19,12 +16,20 @@ import javax.servlet.http.HttpServletRequest
 class OrderController(
     private val orderService: OrderService,
 ) {
-    @GetMapping("/my")
+    @GetMapping("/")
     @AuthRequired
     @ApiOperation("내 주문 모두 불러오기")
     fun getMyOrders(req: HttpServletRequest): List<OrderDto> {
         val customer: CustomerEntity = req.getUser()
         return orderService.getAllOrdersOfCustomer(customer)
+    }
+
+    @PutMapping("/")
+    @AuthRequired
+    @ApiOperation("주문 만들기")
+    fun createNewOrder(req: HttpServletRequest, @RequestBody order: NewOrderDto): OrderDto {
+        val customer: CustomerEntity = req.getUser()
+        return orderService.createNewOrder(customer, order)
     }
 
     @GetMapping("/{id}")

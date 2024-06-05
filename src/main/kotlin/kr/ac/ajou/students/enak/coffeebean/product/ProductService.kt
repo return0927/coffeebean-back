@@ -14,7 +14,7 @@ class ProductService(
         }
     }
 
-    fun searchByProductId(id: Long): ProductDto? {
+    fun searchByProductId(id: Int): ProductDto? {
         return repository.getProductById(id)?.toDto()
     }
 

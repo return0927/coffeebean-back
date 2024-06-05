@@ -12,7 +12,7 @@ class ProductRepository : Repository<ProductEntity>() {
         return result.filterNotNull()
     }
 
-    fun getProductById(id: Long): ProductEntity? {
+    fun getProductById(id: Int): ProductEntity? {
         val result = query("SELECT * FROM products WHERE id = ?", id) { rs ->
             return@query ProductEntity(rs)
         }

@@ -4,7 +4,7 @@ import kr.ac.ajou.students.enak.coffeebean.abc.Entity
 import java.sql.ResultSet
 
 data class ProductEntity(
-    val id: Long,
+    val id: Int,
     var name: String,
     var brandName: String,
     var origins: String? = null,
@@ -27,7 +27,7 @@ data class ProductEntity(
     }
 
     constructor(rs: ResultSet) : this(
-        id = rs.getLong("id"),
+        id = rs.getInt("id"),
         name = rs.getString("name"),
         brandName = rs.getString("brand_name"),
         origins = rs.getString("origins"),

@@ -8,7 +8,7 @@ data class ProductDto(
         example = "1",
         required = true,
     )
-    val productId: Long,
+    val productId: Int,
 
     @ApiModelProperty(
         notes = "상품명",

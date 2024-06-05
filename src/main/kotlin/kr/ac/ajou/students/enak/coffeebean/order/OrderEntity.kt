@@ -26,6 +26,18 @@ data class OrderEntity(
         this.isDirty = true
     }
 
+    fun copyFrom(fetched: OrderEntity): OrderEntity {
+        this.id = fetched.id
+        this.itemId = fetched.itemId
+        this.customerId = fetched.customerId
+        this.orderDate = fetched.orderDate
+        this.price = fetched.price
+        this.deliverAddress = fetched.deliverAddress
+        this.recipient = fetched.recipient
+        this.status = fetched.status
+        return this
+    }
+
     constructor(rs: ResultSet) : this(
         id = rs.getInt("id"),
         itemId = rs.getInt("item_id"),
