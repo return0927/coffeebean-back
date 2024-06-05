@@ -12,7 +12,6 @@ import kr.ac.ajou.students.enak.coffeebean.auth.dto.ScopedLoginDto
 import kr.ac.ajou.students.enak.coffeebean.customer.CustomerEntity
 import kr.ac.ajou.students.enak.coffeebean.errors.AuthRequiredError
 import kr.ac.ajou.students.enak.coffeebean.errors.ReportingError
-import kr.ac.ajou.students.enak.coffeebean.responses.ReportableError
 import kr.ac.ajou.students.enak.coffeebean.seller.SellerEntity
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
@@ -74,10 +73,10 @@ class AuthService(
     }
 
     fun validateToken(token: String): AuthScope {
-        val subject = getSubject(token) ?: throw ReportableError("유효하지 않은 토큰입니다.", HttpStatus.INTERNAL_SERVER_ERROR)
-        val tokenEntry = tokens[token] ?: throw ReportableError("유효하지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED)
-        if (tokenEntry.authScope != subject) throw ReportableError("데이터가 변형된 토큰입니다.", HttpStatus.UNAUTHORIZED)
-        else if (!tokenEntry.isValid()) throw ReportableError("이미 만료된 토큰입니다.", HttpStatus.UNAUTHORIZED)
+        val subject = getSubject(token) ?: throw ReportingError("유효하지 않은 토큰입니다.", HttpStatus.INTERNAL_SERVER_ERROR)
+        val tokenEntry = tokens[token] ?: throw ReportingError("유효하지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED)
+        if (tokenEntry.authScope != subject) throw ReportingError("데이터가 변형된 토큰입니다.", HttpStatus.UNAUTHORIZED)
+        else if (!tokenEntry.isValid()) throw ReportingError("이미 만료된 토큰입니다.", HttpStatus.UNAUTHORIZED)
 
         return subject
     }
