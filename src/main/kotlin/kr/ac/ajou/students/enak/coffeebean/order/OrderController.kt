@@ -28,7 +28,7 @@ class OrderController(
         }
     }
 
-    @PutMapping("/")
+    @PostMapping("/")
     @AuthRequired
     @ApiOperation("주문 만들기")
     fun createNewOrder(req: HttpServletRequest, @RequestBody order: NewOrderDto): OrderDto {
@@ -42,5 +42,17 @@ class OrderController(
     fun getOrder(req: HttpServletRequest, @PathVariable id: Int): OrderDto {
         return orderService.getOrderOnBehalfOf(req.getUser(), id)
             ?: throw ReportingError("해당 상품을 찾을 수 없습니다.", HttpStatus.NOT_FOUND)
+    }
+
+    @PutMapping("/{id}")
+    @AuthRequired
+    @ApiOperation("주문 수정하기")
+    fun updateOrder(req: HttpServletRequest, @PathVariable id: Int, @RequestBody order: UpdateOrderDto): OrderDto {
+        val user = when (req.getUserType()) {
+            AccountType.CUSTOMER -> req.getCustomer()!!
+            AccountType.SELLER -> req.getSeller()!!
+            else -> throw AuthRequiredError()
+        }
+        return orderService.updateOrderOnBehalfOf(user, id, order)
     }
 }

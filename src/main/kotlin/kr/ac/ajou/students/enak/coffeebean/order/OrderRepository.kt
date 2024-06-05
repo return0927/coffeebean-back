@@ -2,6 +2,7 @@ package kr.ac.ajou.students.enak.coffeebean.order
 
 import kr.ac.ajou.students.enak.coffeebean.abc.Repository
 import kr.ac.ajou.students.enak.coffeebean.errors.ReportingError
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 
 @Component
@@ -56,5 +57,34 @@ class OrderRepository : Repository<OrderEntity>() {
 
         fetched ?: throw ReportingError("$order (을)를 저장하는데 오류가 발생했습니다.")
         return order.copyFrom(fetched)
+    }
+
+    fun updateOrder(orderId: Int, order: UpdateOrderDto): OrderEntity {
+        val updating = listOf(
+            "status = ?" to order.status?.name,
+            "deliver_address = ?" to order.deliverAddress,
+            "recipient = ?" to order.recipient,
+        ).filter { it.second != null }
+
+        val queries = mutableListOf<String>()
+        val arguments = mutableListOf<Any>()
+
+        updating.forEach { (query, arg) ->
+            queries.add(query)
+            arguments.add(arg!!)
+        }
+
+        val fetched = query(
+            "UPDATE orders " +
+                    "SET " + queries.joinToString(" and ") +
+                    "WHERE id = ? " +
+                    "RETURNING *;",
+            *arguments.toTypedArray(),
+            orderId,
+        ) {
+            return@query OrderEntity(it)
+        }.firstOrNull()
+            ?: throw ReportingError("상품 $orderId (을)를 찾지 못했습니다.", HttpStatus.NOT_FOUND)
+        return fetched
     }
 }

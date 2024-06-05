@@ -1,5 +1,6 @@
 package kr.ac.ajou.students.enak.coffeebean.order
 
+import kr.ac.ajou.students.enak.coffeebean.abc.Entity
 import kr.ac.ajou.students.enak.coffeebean.customer.CustomerEntity
 import kr.ac.ajou.students.enak.coffeebean.errors.ReportingError
 import kr.ac.ajou.students.enak.coffeebean.product.ProductService
@@ -39,5 +40,17 @@ class OrderService(
             status = OrderStatus.PENDING,
         )
         return OrderDto(orderRepository.saveNewOrder(newOrder))
+    }
+
+    fun updateOrderOnBehalfOf(user: Entity, orderId: Int, order: UpdateOrderDto): OrderDto {
+        assert(user is CustomerEntity || user is SellerEntity) {
+            "사용자는 소비자 혹은 판매자이어야 합니다."
+        }
+
+        if (user is CustomerEntity) {
+            if (order.status != null) throw ReportingError("소비자는 주문 상태를 수정할 수 없습니다.", HttpStatus.NOT_ACCEPTABLE)
+        }
+
+        return OrderDto(orderRepository.updateOrder(orderId, order))
     }
 }
