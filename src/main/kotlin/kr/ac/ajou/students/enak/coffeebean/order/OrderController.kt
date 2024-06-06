@@ -39,7 +39,7 @@ class OrderController(
     @GetMapping("/{id}")
     @AuthRequired
     @ApiOperation("주문 내역 받아오기")
-    fun getOrder(req: HttpServletRequest, @PathVariable id: Int): OrderDto {
+    fun getOrder(req: HttpServletRequest, @PathVariable id: Int): OrderDetailDto {
         return orderService.getOrderOnBehalfOf(req.getUser(), id)
             ?: throw ReportingError("해당 상품을 찾을 수 없습니다.", HttpStatus.NOT_FOUND)
     }

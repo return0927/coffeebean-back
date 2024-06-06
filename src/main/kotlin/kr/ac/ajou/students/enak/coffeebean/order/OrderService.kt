@@ -20,10 +20,22 @@ class OrderService(
     fun getAllOrdersOfSeller(seller: SellerEntity): List<OrderDto> =
         orderRepository.findBySellerId(seller.id!!).map { OrderDto(it) }
 
-    fun getOrderOnBehalfOf(customer: CustomerEntity, orderId: Int): OrderDto? {
+    fun getOrderOnBehalfOf(customer: CustomerEntity, orderId: Int): OrderDetailDto? {
         val order = orderRepository.findByOrderId(orderId) ?: return null
         if (order.customerId != customer.id) return null
-        return OrderDto(order)
+
+        val dto = OrderDto(order)
+        val product = productService.searchByProductId(order.itemId)!!
+
+        return OrderDetailDto(
+            orderId = dto.orderId,
+            name = product.name,
+            status = dto.status,
+            price = dto.price,
+            amount = dto.amount,
+            recipient = dto.recipient,
+            createAt = order.orderDate
+        )
     }
 
     fun createNewOrder(customer: CustomerEntity, order: NewOrderDto): OrderDto {
